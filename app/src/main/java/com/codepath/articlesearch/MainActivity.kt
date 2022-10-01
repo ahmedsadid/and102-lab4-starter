@@ -34,28 +34,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val articleAdapter = ArticleAdapter(this, articles)
-        articlesRecyclerView.adapter = articleAdapter
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
         articlesRecyclerView = findViewById(R.id.articles)
         // TODO: Set up ArticleAdapter with articles
-        try {
-            // Do something with the returned json (contains article information)
-            val parsedJson = createJson().decodeFromString(
-                SearchNewsResponse.serializer(),
-                json.jsonObject.toString()
-            )
-            // TODO: Save the articles
-            parsedJson.response?.docs?.let { list ->
-                articles.addAll(list)
-            }
-            // TODO: Reload the screen
-            articleAdapter.notifyDataSetChanged()
-        }
+        val articleAdapter = ArticleAdapter(this, articles)
+        articlesRecyclerView.adapter = articleAdapter
 
         articlesRecyclerView.layoutManager = LinearLayoutManager(this).also {
             val dividerItemDecoration = DividerItemDecoration(this, it.orientation)
@@ -77,11 +63,17 @@ class MainActivity : AppCompatActivity() {
                 Log.i(TAG, "Successfully fetched articles: $json")
                 try {
                     // TODO: Create the parsedJSON
-
+                    val parsedJson = createJson().decodeFromString(
+                        SearchNewsResponse.serializer(),
+                        json.jsonObject.toString()
+                    )
 
                     // TODO: Do something with the returned json (contains article information)
-
+                    parsedJson.response?.docs?.let { list ->
+                        articles.addAll(list)
+                    }
                     // TODO: Save the articles and reload the screen
+                    articleAdapter.notifyDataSetChanged()
 
                 } catch (e: JSONException) {
                     Log.e(TAG, "Exception: $e")
