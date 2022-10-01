@@ -36,14 +36,14 @@ data class Article (
 @Serializable
 data class HeadLine (
     @SerialName("main")
-    val main: String
+    val main: String?
 ) : java.io.Serializable
 
 @Keep
 @Serializable
 data class Byline (
     @SerialName("original")
-    val main: String
+    val main: String?
 ) : java.io.Serializable
 
 @Keep
